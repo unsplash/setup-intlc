@@ -1,0 +1,23 @@
+{
+	"name": "setup-intlc",
+	"version": "1.0.0",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"build": "ncc build -s ./src/main.ts -o ./dist/",
+		"typecheck": "tsc",
+		"format": "biome format ./src/",
+		"lint": "biome lint ./src/"
+	},
+	"dependencies": {
+		"@actions/core": "^1.10.1",
+		"@actions/tool-cache": "^2.0.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.8.3",
+		"@tsconfig/node20": "^20.1.4",
+		"@types/node": "^20.14.12",
+		"@vercel/ncc": "^0.38.1",
+		"typescript": "^5.5.4"
+	}
+}

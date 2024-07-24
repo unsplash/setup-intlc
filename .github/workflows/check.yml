@@ -1,0 +1,48 @@
+name: Check
+
+on:
+  push:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - 0.8.0
+          - 0.8.3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          version: ${{ matrix.version }}
+      - run: test "$(intlc --version)" = v${{ matrix.version }}
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - run: nix develop -c pnpm install
+      - run: nix develop -c pnpm run typecheck
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - run: nix develop -c pnpm install
+      - run: nix develop -c pnpm run lint
+
+  fmt:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - run: nix develop -c pnpm install
+      - run: nix develop -c pnpm run format
