@@ -1,6 +1,6 @@
 # setup-intlc
 
-A GitHub Action providing CLI access to [intlc](https://github.com/unsplash/intlc). Currently supports only Linux x86_64. 
+A GitHub Action providing CLI access to [intlc](https://github.com/unsplash/intlc).
 
 ## Usage
 

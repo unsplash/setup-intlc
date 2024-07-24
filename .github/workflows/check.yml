@@ -6,13 +6,16 @@ on:
 jobs:
   test:
     name: Test
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        runner:
+          - ubuntu-latest
+          - macos-latest
         version:
-          - 0.8.0
+          - 0.8.1
           - 0.8.3
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./

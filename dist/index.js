@@ -30544,14 +30544,32 @@ var core = __nccwpck_require__(9093);
 var tool_cache = __nccwpck_require__(5561);
 ;// CONCATENATED MODULE: external "node:fs"
 const external_node_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs");
+;// CONCATENATED MODULE: external "node:os"
+const external_node_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:os");
 ;// CONCATENATED MODULE: ./src/main.ts
 
 
 
-const downloadURL = (version) => `https://github.com/unsplash/intlc/releases/download/v${version}/intlc-v${version}-linux-x86_64`;
+
+const getDownloadURL = (version) => {
+    const sys = `${external_node_os_namespaceObject.platform()} ${external_node_os_namespaceObject.arch()}`;
+    const prefix = `https://github.com/unsplash/intlc/releases/download/v${version}/intlc-v${version}`;
+    switch (sys) {
+        case "linux x64":
+            return `${prefix}-linux-x86_64`;
+        case "darwin arm64":
+            return `${prefix}-macos-aarch64`;
+        default: {
+            core.setFailed(`Unsupported os/arch pair: ${sys}`);
+            return null;
+        }
+    }
+};
 const main = async () => {
     const version = core.getInput("version");
-    const url = downloadURL(version);
+    const url = getDownloadURL(version);
+    if (url === null)
+        return;
     core.info(`Downloading v${version} from ${url}`);
     const temporary = await tool_cache.downloadTool(url);
     core.debug(`Setting permissions on ${temporary}`);
